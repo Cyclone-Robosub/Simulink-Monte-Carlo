@@ -39,9 +39,18 @@ dt_data = round((dt_data_target/dt))*dt; %make sure dt_data is a multiple of dt_
 %load the model
 simIn = Simulink.SimulationInput(mdl);
 simIn = simIn.setModelParameter("StopTime",tspan);
-simIn = simIn.setModelVariable()
+simIn = simIn.setModelParameter("FixedStep",dt);
 
+
+simIn = simIn.setModelVariable("position",x0);
+simIn = simIn.setModelVariable("velocity",v0);
+simIn = simIn.setModelVariable("mass",m);
+simIn = simIn.setModelVariable("Damping",b);
+simIn = simIn.setModelVariable("stiffness", k);
+
+%output the model
 simout = sim(simIn);
+
 v = simout.v.Data;
 x = simout.x.Data;
 t = simout.v.Time;
