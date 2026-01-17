@@ -5,11 +5,11 @@ mdl = "Mass_Spring_Damper_System";
 open_system(mdl)
 
 %Initial conditions
-v0 = 0; %velocity m/s
-x0 = 0; %position m
-m = 1; %mass kg
-b = 1; %Damping Ns/m
-k = 1; %stiffness N/m
+v0 = [0.5, 1, 1.5, 2, 2.5, 3]; %velocity m/s
+x0 = [0.5, 1, 1.5, 2, 2.5, 3]; %position m
+m = [0.5, 1, 1.5, 2, 2.5, 3]; %mass kg
+b = [0.5, 1, 1.5, 2, 2.5, 3]; %Damping Ns/m
+k = [0.5, 1, 1.5, 2, 2.5, 3]; %stiffness N/m
 
 %Setting runtime
 tspan = 20; %duration (s)
@@ -20,6 +20,11 @@ dt_data = round((dt_data_target/dt))*dt; %make sure dt_data is a multiple of dt_
 
 simIn = Simulink.SimulationInput(mdl);
 simout = sim(simIn);
+
+%Repeater; 
+
+
+
 v = simout.v.Data;
 x = simout.x.Data;
 t = simout.v.Time;
