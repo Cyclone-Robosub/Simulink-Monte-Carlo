@@ -1,11 +1,29 @@
+function [position,velocity]=placeHolder111(tspan,dt,varargin)
 
 
+p=inputParser();
 
+% Required input
+p.addRequired('tspan',@(x) isnumeric(x))
+p.addRequired('dt', @(x) isnumeric(x));
+
+%optional input
+p.addParameter('massRange',[1,100], mRange, @(x) isnumeric(x) && isvector(x) );
+p.addParameter('dampingRange',[1,100], bRange, @(x) isnumeric(x) && isvector(x) );
+p.addParameter('stiffnessRange', [1,100],kRange, @(x) isnumeric(x) && isvector(x) );
+p.addParameter('positionRange',[1,100],positionRange, @(x) isnumeric(x) && isvector(x) )
+p.addParameter('velocityRange',[1,100],velocityRange, @(x) isnumeric(x) && isvector(x) )
+
+p.parse(tspan,dt,varargin{:});
+
+
+%open model
 mdl = "Mass_Spring_Damper_System";
 open_system(mdl)
 
-%Initial conditions
-v0 = 0; %velocity m/s
+
+%initialize conditions
+v0 = rand()+velocityRange[0]; %velocity m/s
 x0 = 0; %position m
 m = 1; %mass kg
 b = 1; %Damping Ns/m
@@ -13,13 +31,31 @@ k = 1; %stiffness N/m
 
 %Setting runtime
 tspan = 20; %duration (s)
-dt = 1; %step size (s)
-dt_data = 1; 
+dt = 1/100; %step size (s)
 
-%simIn = setModelParameter
+dt_data_target = 1/30;
+dt_data = round((dt_data_target/dt))*dt; %make sure dt_data is a multiple of dt_sim
 
 simIn = Simulink.SimulationInput(mdl);
 simout = sim(simIn);
 v = simout.v.Data;
 x = simout.x.Data;
 t = simout.v.Time;
+
+% Plot the results
+figure;
+subplot(2,1,1);
+plot(t, x);
+xlabel('Time (s)');
+ylabel('Position (m)');
+title('Position vs Time');
+
+subplot(2,1,2);
+plot(t, v);
+xlabel('Time (s)');
+ylabel('Velocity (m/s)');
+title('Velocity vs Time');
+
+
+
+end
