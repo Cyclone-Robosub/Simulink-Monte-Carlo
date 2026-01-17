@@ -29,7 +29,7 @@ m = rand()*(mRange(1)-mRange(0))+mRange(0); %mass kg
 b = rand()*(bRange(1)-bRange(0))+bRange(0); %Damping Ns/m
 k = rand()*(kRange(1)-kRange(0))+kRange(0); %stiffness N/m
 
-%Setting runtime
+%Setting runtime(just show explicitly)
 tspan = tspan; %duration (s)
 dt = dt; %step size (s)
 
