@@ -1,0 +1,5 @@
+
+
+%mass in Kg
+
+simout = sim(simin, m = 1)
