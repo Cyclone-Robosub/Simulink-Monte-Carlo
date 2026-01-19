@@ -16,19 +16,20 @@ arguments (Output)
     
 end
 
-
 plot_tracker = 0;
+
 
 blk = inputArg2 + inputArg3;
 y = str2double(get_param(blk,inputArg4));
 
-set_param(blk,inputArg4,"y")
+set_param(blk,inputArg4,"x")
 
 
 for k = length(inputArg1):-1:1
     simIn(k) = Simulink.SimulationInput(inputArg2);
-    simIn(k) = setVariable(simIn(k), "y",  inputArg1(k));
+    simIn(k) = setVariable(simIn(k), "x",  inputArg1(k));
     %saveResults(outputArg1,simIn)
+
 
 
 end
@@ -36,41 +37,32 @@ end
 outputArg1 = sim(simIn,"UseFastRestart","on","ShowProgress","off");
 
 
-figure;
-
 for c = length(inputArg1):-1:1
 
-    
-    
-    t = outputArg1(c).v.Time;
-    
-    v = outputArg1(c).v.Data;
 
+    v = outputArg1(c).v.Data;
     x = outputArg1(c).x.Data;
-    
-    subplot(2,1,1);
-    plot(t, x);
-    xlabel('Time (s)');
-    ylabel('Position (m)');
-    title('Position vs Time');
-    hold on
-    
-    
+    t = outputArg1(c).v.Time;
+
+    if(plot_tracker == 0)
+    figure;
+
+
     subplot(2,1,2);
     plot(t, v);
     yline(0); 
     xlabel('Time (s)');
     ylabel('Velocity (m/s)');
     title('Velocity vs Time');
-    hold on
-    
+
+    subplot(2,1,1);
+    plot(t, x);
+    xlabel('Time (s)');
+    ylabel('Position (m)');
+    title('Position vs Time');
 
     
-   
 end
-hold off
-
-
 
 
 

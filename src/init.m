@@ -15,7 +15,7 @@ x0 = 0; %position m
 m = 1; %mass kg
 b = 1; %Damping Ns/m
 k = 1; %stiffness N/m
-F0 = [0.5,1,1.5,2,2.5,3]; %Input Force
+F0 = [0,0.5,1,1.5,2,2.5,3]; %Input Force
 
 %Setting runtime
 tspan = 20; %duration (s)
