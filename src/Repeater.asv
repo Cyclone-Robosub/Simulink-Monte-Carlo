@@ -1,68 +1,74 @@
 
 
-function [outputArg1] = Repeater(inputArg1,inputArg2, inputArg3, inputArg4)
+function [output_data] = Repeater(parameter,model, block, block_parameter)
 %REPEATER Summary of this function goes here
 %   Detailed explanation goes here
 arguments (Input)
-    inputArg1
-    inputArg2
-    inputArg3
-    inputArg4
+    parameter
+    model
+    block
+    block_parameter
 end
 
 arguments (Output)
-    outputArg1
-    %outputArg2
+    output_data
+   
     
 end
 
-plot_tracker = 0;
+blk = model + block;
+y = str2double(get_param(blk,block_parameter));
+
+set_param(blk,block_parameter,"y")
 
 
-blk = inputArg2 + inputArg3;
-y = str2double(get_param(blk,inputArg4));
-
-set_param(blk,inputArg4,"x")
-
-
-for k = length(inputArg1):-1:1
-    simIn(k) = Simulink.SimulationInput(inputArg2);
-    simIn(k) = setVariable(simIn(k), "x",  inputArg1(k));
-    %saveResults(outputArg1,simIn)
-
+for k = length(parameter):-1:1
+    simIn(k) = Simulink.SimulationInput(model);
+    simIn(k) = setVariable(simIn(k), "y",  parameter(k));
 
 
 end
 
-outputArg1 = sim(simIn,"UseFastRestart","on","ShowProgress","off");
+output_data = sim(simIn,"UseFastRestart","on","ShowProgress","off");
 
 
-for c = length(inputArg1):-1:1
+figure;
+
+for c = length(parameter):-1:1
 
 
-    v = outputArg1(c).v.Data;
-    x = outputArg1(c).x.Data;
-    t = outputArg1(c).v.Time;
-
-    if(plot_tracker == 0)
-    figure;
-
-
-    subplot(2,1,2);
-    plot(t, v);
-    yline(0); 
-    xlabel('Time (s)');
-    ylabel('Velocity (m/s)');
-    title('Velocity vs Time');
+    v = output_data(c).v.Data;
+    
+    t = output_data(c).v.Time;
+    
+    
+    x = output_data(c).x.Data;
+    
+    Force = ;
+    Shape = {'Pan';'Round';'Button';'Pan';'Round'};
+    Price = [10.0;13.59;10.50;12.00;16.69];
+    Stock = [376;502;465;1091;562];
+    T = table(Pitch,Shape,Price,Stock)
 
     subplot(2,1,1);
     plot(t, x);
     xlabel('Time (s)');
     ylabel('Position (m)');
     title('Position vs Time');
-
+    hold on
     
+    
+    subplot(2,1,2);
+    plot(t, v);
+    yline(0); 
+    xlabel('Time (s)');
+    ylabel('Velocity (m/s)');
+    title('Velocity vs Time');
+    hold on
+   
 end
+hold off
+
 
 
 

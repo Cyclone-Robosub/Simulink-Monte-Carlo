@@ -1,53 +1,58 @@
 
 
-function [outputArg1] = Repeater(inputArg1,inputArg2, inputArg3, inputArg4)
+function [output_data] = Repeater(parameter,model, block, block_parameter)
 %REPEATER Summary of this function goes here
 %   Detailed explanation goes here
 arguments (Input)
-    inputArg1
-    inputArg2
-    inputArg3
-    inputArg4
+    parameter
+    model
+    block
+    block_parameter
 end
 
 arguments (Output)
-    outputArg1
-    %outputArg2
+    output_data
+   
     
 end
 
+blk = model + block;
+y = str2double(get_param(blk,block_parameter));
 
-plot_tracker = 0;
-
-blk = inputArg2 + inputArg3;
-y = str2double(get_param(blk,inputArg4));
-
-set_param(blk,inputArg4,"y")
+set_param(blk,block_parameter,"y")
 
 
-for k = length(inputArg1):-1:1
-    simIn(k) = Simulink.SimulationInput(inputArg2);
-    simIn(k) = setVariable(simIn(k), "y",  inputArg1(k));
-    %saveResults(outputArg1,simIn)
+for k = length(parameter):-1:1
+    simIn(k) = Simulink.SimulationInput(model);
+    simIn(k) = setVariable(simIn(k), "y",  parameter(k));
 
 
 end
 
-outputArg1 = sim(simIn,"UseFastRestart","on","ShowProgress","off");
+output_data = sim(simIn,"UseFastRestart","on","ShowProgress","off");
 
 
 figure;
 
-for c = length(inputArg1):-1:1
+for c = length(parameter):-1:1
 
-    
-    
-    t = outputArg1(c).v.Time;
-    
-    v = outputArg1(c).v.Data;
 
-    x = outputArg1(c).x.Data;
+    v = output_data(c).v.Data;
     
+    t = output_data(c).v.Time;
+    
+    
+    x = output_data(c).x.Data;
+    positon = x;
+    velocity = v;
+    time = t;
+    
+    
+    T = table(positon,velocity,time);
+
+    writetable(T,'tabledata.txt');
+    type tabledata.txt
+
     subplot(2,1,1);
     plot(t, x);
     xlabel('Time (s)');
@@ -63,13 +68,9 @@ for c = length(inputArg1):-1:1
     ylabel('Velocity (m/s)');
     title('Velocity vs Time');
     hold on
-    
-
-    
    
 end
 hold off
-
 
 
 
