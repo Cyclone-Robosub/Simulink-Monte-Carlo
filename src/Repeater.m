@@ -1,0 +1,60 @@
+
+
+function [outputArg1] = Repeater(inputArg1,inputArg2, inputArg3, inputArg4)
+%REPEATER Summary of this function goes here
+%   Detailed explanation goes here
+arguments (Input)
+    inputArg1
+    inputArg2
+    inputArg3
+    inputArg4
+end
+
+arguments (Output)
+    outputArg1
+    %outputArg2
+    
+end
+
+
+
+blk = inputArg2 + inputArg3;
+y = str2double(get_param(blk,inputArg4));
+
+set_param(blk,inputArg4,"x")
+
+
+for k = length(inputArg1):-1:1
+    simIn(k) = Simulink.SimulationInput(inputArg2);
+    simIn(k) = setVariable(simIn(k), "x",  inputArg1(k));
+    %saveResults(outputArg1,simIn)
+
+
+
+end
+
+outputArg1 = sim(simIn,"UseFastRestart","on","ShowProgress","off");
+
+
+ v = outputArg1(1).v.Data;
+ x = outputArg1(1).x.Data;
+ t = outputArg1(1).v.Time;
+
+    figure;
+
+    subplot(2,1,1);
+    plot(t, x);
+    xlabel('Time (s)');
+    ylabel('Position (m)');
+    title('Position vs Time');
+
+    subplot(2,1,2);
+    plot(t, v);
+    yline(0); 
+    xlabel('Time (s)');
+    ylabel('Velocity (m/s)');
+    title('Velocity vs Time');
+    
+    
+
+%code to save results
