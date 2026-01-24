@@ -12,21 +12,28 @@ end
 
 arguments (Output)
     output_data
-   
-    
 end
 
-blk = model + block;
-y = str2double(get_param(blk,block_parameter));
 
-set_param(blk,block_parameter,"y")
+[simulation_number, parameter_list] = size(parameter);
+disp(size(parameter))
+disp(parameter_list)
+
+for q = (parameter_list):-1:1 
+    blk(q) = model + "/" + block(q);
+    y = str2double(get_param(blk(q), block_parameter(q)));
+
+    set_param(blk(q), block_parameter(q),"y")
+end
 
 
-for k = length(parameter):-1:1
-    simIn(k) = Simulink.SimulationInput(model);
-    simIn(k) = setVariable(simIn(k), "y",  parameter(k));
 
-
+for kk = length(simulation_number):-1:1
+    
+    
+    simIn(kk) = Simulink.SimulationInput(model);
+    simIn(kk) = setVariable(simIn(kk), "y",  parameter(kk));
+    
 end
 
 output_data = sim(simIn,"UseFastRestart","on","ShowProgress","off");
@@ -34,9 +41,9 @@ output_data = sim(simIn,"UseFastRestart","on","ShowProgress","off");
 
 figure;
 
-for c = length(parameter):-1:1
-
-
+for c = length(simulation_number):-1:1
+    output_data(c)
+    
     v = output_data(c).v.Data;
     
     t = output_data(c).v.Time;

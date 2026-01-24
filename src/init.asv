@@ -1,0 +1,34 @@
+clc
+close all
+
+
+mdl = "Mass_Spring_Damper_System";
+inner_mdl = "Mass_Spring_Damper_Subsystem";
+
+open_system(mdl)
+
+%Initial conditions
+v0 = 1:10; %velocity m/s
+x0 = 1:10; %position m
+m = 1:10;%:10; %mass kg
+b = 1:10;%:10; %Damping Ns/m
+k = 1:10;%:10; %stiffness N/m
+F0 = 1:10; %Input Force
+
+%Setting runtime
+tspan = 20; %duration (s)
+dt = 1/100; %step size (s)
+
+
+
+dt_data_target = 1/30;
+dt_data = round((dt_data_target/dt))*dt; %make sure dt_data is a multiple of dt_sim
+
+
+
+block = ["Mass_Spring_Damper_Subsystem/Vgral", "Mass_Spring_Damper_Subsystem/Xgral", "Mass_Spring_Damper_Subsystem/Mass", "Mass_Spring_Damper_Subsystem/Damping", "Mass_Spring_Damper_Subsystem/Stiffness", "Mass_Spring_Damper_Subsystem/Damping", /Input ]
+parameters = [v0, x0, m, b, k, F0];
+
+
+
+simout = Repeater(parameters, mdl, "/Input Force", "Value");

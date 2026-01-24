@@ -1,0 +1,36 @@
+%Initial conditions
+v0 = transpose(1:10); %velocity m/s
+x0 = transpose(1:10); %position m
+m = transpose(1:10); %mass kg
+b = transpose(1:10); %Damping Ns/m
+k = transpose(1:10); %stiffness N/m
+F0 = transpose(2:11); %input force
+
+disp(v0)
+
+
+mdl = "Mass_Spring_Damper_System";
+parameters = [v0, x0, m, b, k, F0];
+
+disp(parameters)
+[simulation_number, parameter_list] = size(parameters);
+
+disp((parameter_list))
+
+for L = (parameter_list):-1:1 
+        
+        parameters(L, L);
+        disp(parameters(L, L));
+    
+end
+
+
+
+for kk = length(simulation_number):-1:1
+    
+    
+    
+    simIn(kk) = Simulink.SimulationInput(mdl);
+    simIn(kk) = setVariable(simIn(kk), "y",  parameters(kk));
+    
+end
