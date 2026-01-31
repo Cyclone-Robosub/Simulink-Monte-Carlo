@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 function [position,velocity]=placeHolder111(tspan,dt,varargin)
 
+=======
+clc
+close all
+>>>>>>> origin/Josie-Workspace-2
 
 p=inputParser();
 
@@ -19,8 +24,11 @@ p.parse(tspan,dt,varargin{:});
 
 %open model
 mdl = "Mass_Spring_Damper_System";
+inner_mdl = "Mass_Spring_Damper_Subsystem";
+
 open_system(mdl)
 
+<<<<<<< HEAD
 
 %initialize conditions
 v0 = rand()+velocityRange[0]; %velocity m/s
@@ -28,11 +36,21 @@ x0 = 0; %position m
 m = 1; %mass kg
 b = 1; %Damping Ns/m
 k = 1; %stiffness N/m
+=======
+%Initial conditions
+v0 = transpose(1:1); %velocity m/s
+x0 = transpose(1:10); %position m
+m = transpose(1:10);%:10; %mass kg
+b = transpose(1:10);%:10; %Damping Ns/m
+k = transpose(1:10);%:10; %stiffness N/m
+F0 = transpose(0:9); %Input Force
+>>>>>>> origin/Josie-Workspace-2
 
 %Setting runtime
 tspan = 20; %duration (s)
 dt = 1/100; %step size (s)
 
+<<<<<<< HEAD
 dt_data_target = 1/30;
 dt_data = round((dt_data_target/dt))*dt; %make sure dt_data is a multiple of dt_sim
 
@@ -59,3 +77,21 @@ title('Velocity vs Time');
 
 
 end
+=======
+
+
+dt_data_target = 1/30;
+dt_data = round((dt_data_target/dt))*dt; %make sure dt_data is a multiple of dt_sim
+
+
+
+blocks = ["Mass_Spring_Damper_Subsystem/Vgral", "Mass_Spring_Damper_Subsystem/Xgral", "Mass_Spring_Damper_Subsystem/Mass", "Mass_Spring_Damper_Subsystem/Damping", "Mass_Spring_Damper_Subsystem/Stiffness", "Input Force" ];
+
+block_parameters = ["InitialCondition", "InitialCondition", "Gain", "Gain", "Gain", "Value"];
+
+parameters = [v0, x0, m, b, k, F0];
+
+
+
+simout = Repeater(parameters, mdl, blocks, block_parameters);
+>>>>>>> origin/Josie-Workspace-2
