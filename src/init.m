@@ -8,12 +8,12 @@ inner_mdl = "Mass_Spring_Damper_Subsystem";
 open_system(mdl)
 
 %Initial conditions
-v0 = transpose(0:9); %velocity m/s
-x0 = transpose(0:9); %position m
-m = transpose(1:10);%:10; %mass kg
-b = transpose(1:10);%:10; %Damping Ns/m
-k = transpose(1:10);%:10; %stiffness N/m
-F0 = transpose(0:9); %Input Force
+v0 = transpose(1:10); %velocity m/s
+x0 = transpose(1:10); %position m
+m = transpose(1:10);  %mass kg
+b = transpose(1:10);  %Damping Ns/m
+k = transpose(1:10); %stiffness N/m
+F0 = transpose(1:10); %Input Force
 
 %Setting runtime
 tspan = 20; %duration (s)

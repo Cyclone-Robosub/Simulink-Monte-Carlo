@@ -14,30 +14,36 @@ arguments (Output)
     output_data
 end
 
+[simulation_number, parameter_list] = size(parameter); %Sets simulation number and length of parameters  
 
-[simulation_number, parameter_list] = size(parameter);
-disp(size(parameter))
-disp(parameter_list)
-
+%Sets each parameters to a different index of y and grabs the block + block parameter we are interested in
 for q = (parameter_list):-1:1 
     blk(q) = model + "/" + block(q);
-    y = str2double(get_param(blk(q), block_parameter(q)));
 
-    set_param(blk(q), block_parameter(q),"y")
+    updated_parameter(q) = str2double(get_param(blk(q), block_parameter(q)));
+    
+    set_param(blk(q), block_parameter(q),"updated_parameter")
+
 end
 
 
 
-for kk = length(simulation_number):-1:1
+for kk = (simulation_number):-1:1
     
     
-    simIn(kk) = Simulink.SimulationInput(model);
-    simIn(kk) = setVariable(simIn(kk), "y",  parameter(kk));
+        for p = (parameter_list):-1:1 
+            
+            simIn(kk) = Simulink.SimulationInput(model);
+            simIn(kk) = setVariable(simIn(kk), "updated_parameter",  parameter(kk,p));
+            display(parameter(kk,p))
+            display(simIn(kk))
     
+            
+        end
 end
+
 
 output_data = sim(simIn,"UseFastRestart","on","ShowProgress","off");
-
 
 figure;
 
@@ -58,7 +64,7 @@ for c = length(simulation_number):-1:1
     T = table(positon,velocity,time);
 
     writetable(T,'tabledata.txt');
-    type tabledata.txt
+    %type tabledata.txt
 
     subplot(2,1,1);
     plot(t, x);
