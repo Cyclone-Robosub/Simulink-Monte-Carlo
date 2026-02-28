@@ -1,6 +1,7 @@
 
 
 
+
 disp("-----------------------------")
 
 
@@ -8,16 +9,30 @@ velocity=[];
 position=[];
 parameters=[];
 
+dt = 0.001';
+tspan = 1;
+Nsamples = 10;
+options = {"massRange",[1,1],"dampingRange",[0,1],"stiffnessRange",[1,1],"positionRange",[5,5],"velocityRange",[0,0]};
+%{
+p.addParameter('massRange',[1,100],  @(x) isnumeric(x) && isvector(x) );
+p.addParameter('dampingRange',[1,100],  @(x) isnumeric(x) && isvector(x) );
+p.addParameter('stiffnessRange', [1,100], @(x) isnumeric(x) && isvector(x) );
+p.addParameter('positionRange',[1,100], @(x) isnumeric(x) && isvector(x) )
+p.addParameter('velocityRange',[1,100], @(x) isnumeric(x) && isvector(x) )
+%}
+for i=1:Nsamples
+[pos,velo,paras]=ProcessData(tspan, dt, "massRange",[1,1],"dampingRange",[0,1],"stiffnessRange",[1,1],"positionRange",[5,5],"velocityRange",[0,0]);
 
-for i=1:3
-[pos,velo,paras]=placeHolder111(100,0.0001);
 velocity=[velocity;velo(:)'];
 position=[position;pos(:)'];
 parameters=[parameters;paras(:)'];
 
 end
 
+
+
 [cost,index] = rank_Parameter(velocity,position,@Converge_speed);
+
 disp(cost)
 disp(index)
 disp(parameters)
@@ -37,7 +52,7 @@ disp("stiffness:")
 disp(parameters(place,5));
 
 
-function [position,velocity,para]=placeHolder111(tspan,dt,varargin)
+function [position,velocity,para]=ProcessData(tspan,dt,varargin)
 
 
 p=inputParser();
@@ -62,7 +77,7 @@ stiffnessRange=p.Results.stiffnessRange;
 positionRange=p.Results.positionRange;
 velocityRange=p.Results.velocityRange;
 
-
+% the position of the model
 %open model
 myfile="/Users/bochaocai/Documents/MATLAB/RoboSub/Monte_Carlo_Proof/Simulink-Monte-Carlo/src/Mass_Spring_Damper_System2.slx";
 
@@ -80,7 +95,6 @@ x0 = rand()*(positionRange(2)-positionRange(1))+positionRange(1) %position m
 m = rand()*(massRange(2)-massRange(1))+massRange(1); %mass kg
 b = rand()*(dampingRange(2)-dampingRange(1))+dampingRange(1); %Damping Ns/m
 k = rand()*(stiffnessRange(2)-stiffnessRange(1))+stiffnessRange(1); %stiffness N/m
-
 
 %Setting runtime(just show explicitly)
 tspan = tspan; %duration (s)
