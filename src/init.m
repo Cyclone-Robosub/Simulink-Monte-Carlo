@@ -79,7 +79,7 @@ velocityRange=p.Results.velocityRange;
 
 % the position of the model
 %open model
-myfile="/Users/bochaocai/Documents/MATLAB/RoboSub/Monte_Carlo_Proof/Simulink-Monte-Carlo/src/Mass_Spring_Damper_System2.slx";
+myfile="/Users/ajosh/Documents/GitHub/Simulink-Monte-Carlo/src/Mass_Spring_Damper_System2.slx";
 
 
 load_system(myfile);
