@@ -1,5 +1,5 @@
 
-model="this is position";
+model="/Users/bochaocai/Documents/MATLAB/RoboSub/Monte_Carlo_Proof/Simulink-Monte-Carlo/src/cascaded_pid_controller.slx";
 
 %Import the initial constant
 constant="this is constant";

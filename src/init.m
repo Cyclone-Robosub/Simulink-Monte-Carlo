@@ -20,6 +20,7 @@ p.addParameter('stiffnessRange', [1,100], @(x) isnumeric(x) && isvector(x) );
 p.addParameter('positionRange',[1,100], @(x) isnumeric(x) && isvector(x) )
 p.addParameter('velocityRange',[1,100], @(x) isnumeric(x) && isvector(x) )
 %}
+
 for i=1:Nsamples
 [pos,velo,paras]=ProcessData(tspan, dt, "massRange",[1,1],"dampingRange",[0,1],"stiffnessRange",[1,1],"positionRange",[5,5],"velocityRange",[0,0]);
 
@@ -28,6 +29,11 @@ position=[position;pos(:)'];
 parameters=[parameters;paras(:)'];
 
 end
+
+
+
+
+
 
 
 
